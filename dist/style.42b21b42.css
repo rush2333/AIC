@@ -1,0 +1,41 @@
+._olPopup_uz3dw_1 {
+    position: absolute;
+    background-color: white;
+    filter: drop-shadow(0 1px 4px rgba(0,0,0,0.2));
+    padding: 15px;
+    border-radius: 10px;
+    border: 1px solid #cccccc;
+    bottom: 12px;
+    left: -50px;
+    min-width: 280px;
+}
+._olPopup_uz3dw_1:after, ._olPopup_uz3dw_1:before {
+    top: 100%;
+    border: solid transparent;
+    content: " ";
+    height: 0;
+    width: 0;
+    position: absolute;
+    pointer-events: none;
+}
+._olPopup_uz3dw_1:after {
+    border-top-color: white;
+    border-width: 10px;
+    left: 48px;
+    margin-left: -10px;
+}
+._olPopup_uz3dw_1:before {
+    border-top-color: #cccccc;
+    border-width: 11px;
+    left: 48px;
+    margin-left: -11px;
+}
+._olPopupCloser_uz3dw_67 {
+    text-decoration: none;
+    position: absolute;
+    top: 2px;
+    right: 8px;
+}
+._olPopupCloser_uz3dw_67:after {
+    content: "\2716";
+}
