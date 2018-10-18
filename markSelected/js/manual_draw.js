@@ -21,34 +21,58 @@ function ManualDraw(drawOptions) {
     freehand: false
   }, drawOptions);
   var features = new Collection();
-  let Num = features.getLength();
-  let fn = num => {
-    return new VectorLayer({
-      source: new VectorSource({
-        features: features,
-        wrapX: false
+  let textNum = features.getLength();
+  let textContent = new Text({
+  })
+  // let fn = num => {
+  //   return new VectorLayer({
+  //     source: new VectorSource({
+  //       features: features,
+  //       wrapX: false
+  //     }),
+  //     style: new Style({
+  //       text: new Text({
+  //         text: textContent,
+  //       }),
+  //       fill: new Fill({
+  //         color: drawkSettings.fillColor
+  //       }),
+  //       stroke: new Stroke({
+  //         color: drawkSettings.strokeColor,
+  //         width: drawkSettings.strokeWidth
+  //       }),
+  //       image: new Circle({
+  //         radius: drawkSettings.imageRadius,
+  //         fill: new Fill({
+  //           color: drawkSettings.imageColor
+  //         })
+  //       })
+  //     })
+  //   })
+  // }
+  //   let featureOverlay = fn()
+  var featureOverlay = new VectorLayer({
+    source: new VectorSource({
+      features: features,
+      wrapX: false
+    }),
+    style: new Style({
+      text: textContent,
+      fill: new Fill({
+        color: drawkSettings.fillColor
       }),
-      style: new Style({
-        text: new Text({
-          text: `${num}`,
-        }),
+      stroke: new Stroke({
+        color: drawkSettings.strokeColor,
+        width: drawkSettings.strokeWidth
+      }),
+      image: new Circle({
+        radius: drawkSettings.imageRadius,
         fill: new Fill({
-          color: drawkSettings.fillColor
-        }),
-        stroke: new Stroke({
-          color: drawkSettings.strokeColor,
-          width: drawkSettings.strokeWidth
-        }),
-        image: new Circle({
-          radius: drawkSettings.imageRadius,
-          fill: new Fill({
-            color: drawkSettings.imageColor
-          })
+          color: drawkSettings.imageColor
         })
       })
     })
-  }
-  var featureOverlay = fn(Num)
+  });
   var modify = new Modify({
     features: features,
   });
@@ -63,15 +87,14 @@ function ManualDraw(drawOptions) {
       freehand: drawkSettings.freehand
     });
     map.addInteraction(draw);
-    map.on('click',() => {console.log(features.getLength())})
+    map.on('click',() => {
+      console.log(textNum)
+      textContent.setText(textNum.toString());
+    })
   }
   this.close = function(){
     map.removeLayer(featureOverlay);
     map.removeInteraction(draw);
-    // let pointArr = features.getArray();
-    // console.log(pointArr);
-    // console.log(features.item(1))
-    // map.removeLayer(featureOverlay)
   }
 }
 

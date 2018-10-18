@@ -78782,34 +78782,57 @@ function ManualDraw(drawOptions) {
     freehand: false
   }, drawOptions);
   var features = new _Collection2.default();
-  var Num = features.getLength();
-  var fn = function fn(num) {
-    return new _Vector2.default({
-      source: new _Vector4.default({
-        features: features,
-        wrapX: false
+  var textNum = features.getLength();
+  var textContent = new _Text2.default({});
+  // let fn = num => {
+  //   return new VectorLayer({
+  //     source: new VectorSource({
+  //       features: features,
+  //       wrapX: false
+  //     }),
+  //     style: new Style({
+  //       text: new Text({
+  //         text: textContent,
+  //       }),
+  //       fill: new Fill({
+  //         color: drawkSettings.fillColor
+  //       }),
+  //       stroke: new Stroke({
+  //         color: drawkSettings.strokeColor,
+  //         width: drawkSettings.strokeWidth
+  //       }),
+  //       image: new Circle({
+  //         radius: drawkSettings.imageRadius,
+  //         fill: new Fill({
+  //           color: drawkSettings.imageColor
+  //         })
+  //       })
+  //     })
+  //   })
+  // }
+  //   let featureOverlay = fn()
+  var featureOverlay = new _Vector2.default({
+    source: new _Vector4.default({
+      features: features,
+      wrapX: false
+    }),
+    style: new _Style2.default({
+      text: textContent,
+      fill: new _Fill2.default({
+        color: drawkSettings.fillColor
       }),
-      style: new _Style2.default({
-        text: new _Text2.default({
-          text: '' + num
-        }),
+      stroke: new _Stroke2.default({
+        color: drawkSettings.strokeColor,
+        width: drawkSettings.strokeWidth
+      }),
+      image: new _Circle2.default({
+        radius: drawkSettings.imageRadius,
         fill: new _Fill2.default({
-          color: drawkSettings.fillColor
-        }),
-        stroke: new _Stroke2.default({
-          color: drawkSettings.strokeColor,
-          width: drawkSettings.strokeWidth
-        }),
-        image: new _Circle2.default({
-          radius: drawkSettings.imageRadius,
-          fill: new _Fill2.default({
-            color: drawkSettings.imageColor
-          })
+          color: drawkSettings.imageColor
         })
       })
-    });
-  };
-  var featureOverlay = fn(Num);
+    })
+  });
   var modify = new _Modify2.default({
     features: features
   });
@@ -78825,16 +78848,13 @@ function ManualDraw(drawOptions) {
     });
     _map.map.addInteraction(draw);
     _map.map.on('click', function () {
-      console.log(features.getLength());
+      console.log(textNum);
+      textContent.setText(textNum.toString());
     });
   };
   this.close = function () {
     _map.map.removeLayer(featureOverlay);
     _map.map.removeInteraction(draw);
-    // let pointArr = features.getArray();
-    // console.log(pointArr);
-    // console.log(features.item(1))
-    // map.removeLayer(featureOverlay)
   };
 }
 
@@ -79931,7 +79951,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = '' || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + '49353' + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + '55405' + '/');
   ws.onmessage = function (event) {
     var data = JSON.parse(event.data);
 
