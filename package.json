@@ -4,10 +4,10 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "start": "parcel index.html",
+    "start": "parcel markSelected/index.html",
     "build": "parcel build index.html",
     "dev": "parcel build bundler.js",
-    "start:map": "parcel markSelected/index.html"
+    "start:map": "parcel index.html"
   },
   "dependencies": {
     "babel-polyfill": "^6.26.0",

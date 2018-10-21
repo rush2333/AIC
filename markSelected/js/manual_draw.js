@@ -8,8 +8,22 @@ import Stroke from 'ol/style/Stroke'
 import Circle from 'ol/style/Circle'
 import Modify from 'ol/interaction/Modify'
 import Draw from 'ol/interaction/Draw'
-import {map} from './map'
+import { map } from './map'
+import Feature from 'ol/Feature';
+import Geometry from 'ol/geom/Geometry';
+import Point from 'ol/geom/Point';
 
+const data = [
+  [12587974.876146005, 2584205.489495143],
+  [12588009.378976336, 2584201.508396432],
+  [12588033.265547676, 2584186.247539509],
+  [12588066.441351326, 2584168.332611005],
+  [12588087.673851084, 2584157.052843231],
+  [12588117.532065257, 2584140.464932293],
+  [12588129.475350928, 2584126.531111161],
+]
+
+var featuresArr;
 function ManualDraw(drawOptions) {
   var drawkSettings = $.extend({
     fillColor: 'rgba(255, 255, 255, 0.2)',
@@ -21,63 +35,78 @@ function ManualDraw(drawOptions) {
     freehand: false
   }, drawOptions);
   var features = new Collection();
-  let textNum = features.getLength();
-  let textContent = new Text({
-  })
-  // let fn = num => {
-  //   return new VectorLayer({
-  //     source: new VectorSource({
-  //       features: features,
-  //       wrapX: false
-  //     }),
-  //     style: new Style({
-  //       text: new Text({
-  //         text: textContent,
-  //       }),
-  //       fill: new Fill({
-  //         color: drawkSettings.fillColor
-  //       }),
-  //       stroke: new Stroke({
-  //         color: drawkSettings.strokeColor,
-  //         width: drawkSettings.strokeWidth
-  //       }),
-  //       image: new Circle({
-  //         radius: drawkSettings.imageRadius,
-  //         fill: new Fill({
-  //           color: drawkSettings.imageColor
-  //         })
-  //       })
-  //     })
-  //   })
-  // }
-  //   let featureOverlay = fn()
+  var featurePoint = new Feature();
   var featureOverlay = new VectorLayer({
     source: new VectorSource({
       features: features,
       wrapX: false
     }),
-    style: new Style({
-      text: textContent,
-      fill: new Fill({
-        color: drawkSettings.fillColor
-      }),
-      stroke: new Stroke({
-        color: drawkSettings.strokeColor,
-        width: drawkSettings.strokeWidth
-      }),
-      image: new Circle({
-        radius: drawkSettings.imageRadius,
-        fill: new Fill({
-          color: drawkSettings.imageColor
-        })
-      })
-    })
   });
   var modify = new Modify({
     features: features,
   });
+  function sum(m, n) {
+    var num = Math.floor(Math.random() * (m - n) + n);
+    return num
+  }
+  this.check = function () {
+    console.log(featurePoint);
+    for (let i = 0; i < data.length; i++) {
+      let featureGeometry = new Point(data[i]);
+      console.log(featureGeometry);
+      featurePoint.setGeometry(featureGeometry);
+      features.push(featurePoint);
+    }
+    features.array_.forEach((feature, index) => {
+      feature.setStyle(
+        new Style({
+          text: new Text({
+            text: '' + `${index + 1}`,
+            font: '18px sans-serif '
+          }),
+          fill: new Fill({
+            color: drawkSettings.fillColor
+          }),
+          stroke: new Stroke({
+            color: drawkSettings.strokeColor,
+            width: drawkSettings.strokeWidth
+          }),
+          image: new Circle({
+            radius: drawkSettings.imageRadius,
+            fill: new Fill({
+              color: drawkSettings.imageColor
+            })
+          })
+        }))
+    })
+    map.addLayer(featureOverlay);
+  }
   var draw;
-  this.draw = function() {
+  this.draw = function () {
+    map.on('click', () => {
+      features.array_.forEach((feature, index) => {
+        feature.setStyle(
+          new Style({
+            text: new Text({
+              text: '' + `${index + 1}`,
+              font: '18px sans-serif '
+            }),
+            fill: new Fill({
+              color: drawkSettings.fillColor
+            }),
+            stroke: new Stroke({
+              color: drawkSettings.strokeColor,
+              width: drawkSettings.strokeWidth
+            }),
+            image: new Circle({
+              radius: drawkSettings.imageRadius,
+              fill: new Fill({
+                color: drawkSettings.imageColor
+              })
+            })
+          }))
+      })
+    })
     map.removeLayer(featureOverlay);
     map.addLayer(featureOverlay);
     map.addInteraction(modify);
@@ -87,18 +116,17 @@ function ManualDraw(drawOptions) {
       freehand: drawkSettings.freehand
     });
     map.addInteraction(draw);
-    map.on('click',() => {
-      console.log(textNum)
-      textContent.setText(textNum.toString());
-    })
   }
-  this.close = function(){
-    map.removeLayer(featureOverlay);
+  this.close = function () {
     map.removeInteraction(draw);
   }
+  this.delete = function (e) {
+    // console.log(e)
+  }
+  featuresArr = features;
 }
 
 
 
 
-export default ManualDraw
+export { ManualDraw, featuresArr }

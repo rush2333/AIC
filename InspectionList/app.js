@@ -2,9 +2,9 @@ import React, { Component } from "react";
 import { Table, Card, DatePicker, Button } from "antd";
 import locale from "antd/lib/date-picker/locale/zh_CN";
 import store from "./store";
-import request from "./request";
+import request from "../help/request";
 import { observer } from "mobx-react";
-import exportFile from "./export-file";
+import exportFile from "../help/export-file";
 const columns = [
   {
     title: "企业地址",

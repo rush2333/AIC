@@ -40,3 +40,7 @@
 .olPopupCloser:after {
     content: "✖";
 }
+.content {
+    max-width: 1666px;
+    min-width: 1666px;
+}

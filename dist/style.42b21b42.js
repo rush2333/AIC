@@ -170,8 +170,9 @@ var reloadCSS = require('_css_loader');
 module.hot.dispose(reloadCSS);
 module.hot.accept(reloadCSS);
 module.exports = {
-        "olPopup": "_olPopup_uz3dw_1",
-        "olPopupCloser": "_olPopupCloser_uz3dw_67"
+        "olPopup": "_olPopup_9rom4_1",
+        "olPopupCloser": "_olPopupCloser_9rom4_67",
+        "content": "_content_9rom4_85"
 };
 },{"_css_loader":"..\\node_modules\\parcel-bundler\\src\\builtins\\css-loader.js"}],"..\\node_modules\\parcel-bundler\\src\\builtins\\hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
@@ -202,7 +203,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = '' || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + '55405' + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + '59219' + '/');
   ws.onmessage = function (event) {
     var data = JSON.parse(event.data);
 

@@ -2,17 +2,18 @@ import Select from 'ol/interaction/Select';
 import Overlay from 'ol/Overlay';
 import { toStringHDMS } from 'ol/coordinate';
 import { transform } from 'ol/proj';
-import { click } from 'ol/events/condition'
-import { map } from './map'
+import { click } from 'ol/events/condition';
+import { map } from './map';
+import { featuresArr } from './manual_draw'
 
 export default function classSetPop() {
-  this.addEvtClick = function(callback){
+  this.addEvtClick = function (callback) {
     var selectClick = new Select({
       condition: click
     });
-    if (selectClick !== null ){
+    if (selectClick !== null) {
       map.addInteraction(selectClick);
-      selectClick.on('select', function(e) {
+      selectClick.on('select', function (e) {
         var iconSelect = e.target;//获取事件对象，即产生这个事件的元素-->ol.interaction.Select
         var iconCollection = iconSelect.getFeatures();//获取这个事件绑定的features-->返回值是一个ol.Collection对象
         var iconFeatures = iconCollection.getArray();//获取这个集合的第一个元素-->真正的feature
@@ -27,13 +28,14 @@ export default function classSetPop() {
         }
       });
     }
-}
-  
-  this.showPopu = function(){
-    this.addEvtClick(function(coordinate) {
+  }
+
+  this.showPopu = function () {
+    this.addEvtClick(function (coordinate) {
       $("#popup").css("display", "block");
       let container = document.getElementById('popup');
       let closer = document.getElementById('popup-closer');
+      let btn = document.getElementById('popup-delete');
       let popOverlay = new Overlay({
         element: container,
         autoPan: true,
@@ -43,9 +45,18 @@ export default function classSetPop() {
         offset: [10, -20]
       });
       map.addOverlay(popOverlay);
+     
       let hdms = toStringHDMS(transform(coordinate, 'EPSG:3857', 'EPSG:4326'));
-      $("#popup-content").html('<p>You clicked here:</p><code>' + hdms + '</code>');
+      $("#popup-content").html('<span>经纬度:</span><br/><code>' + hdms + '</code>');
       popOverlay.setPosition(coordinate);
+      btn.onclick = function (){
+        featuresArr.forEach(element => {
+          console.log(element.getGeometry().getCoordinates());
+          if (element.getGeometry().getCoordinates().toString() == coordinate.toString()) {
+            // featuresArr.removeAt(featuresArr.array_.indexOf(element));
+          }
+        });      
+      }
       closer.onclick = function () {
         popOverlay.setPosition(undefined);
         closer.blur();

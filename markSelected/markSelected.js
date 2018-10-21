@@ -1,74 +1,75 @@
 import React, { Component, Fragment } from 'react'
-import { Button, Input } from 'antd'
-import Map from 'ol/Map';
-import View from 'ol/View';
-import TileLayer from 'ol/layer/Tile.js';
-import OSM from 'ol/source/OSM.js';
-import { transform } from 'ol/proj';
-import ManualDraw from './js/manual_draw';
+import { Button, Input, Table, Row, Col } from 'antd'
+import { observer } from "mobx-react";
+import { ManualDraw, featuresArr } from './js/manual_draw';
 import { classGotoMap } from './js/map';
 import classSetPop from './js/popup'
 import st from './css/style.css'
 
+const columns = [
+  {
+    title: '序号'
+  },
+  {
+    title: '经纬度'
+  },
+  {
+    title: '操作'
+  }
+];
+const drawPoint = new ManualDraw({
+  strokeColor: '#0066FF',
+  imageColor: '#0066FF',
+  drawtype: 'Point',
+});
+const showPopu = new classSetPop();
+
+
+@observer
 class MarkSelected extends Component {
-  //   constructor(props) {
-  //     super(props);
-  //     this.state = {
-  //       center: [113.081622, 22.60267],
-  //       zoom: 18
-  //     };
-  //     this.map = new Map({
-  //       target: null,
-  //       layers: [
-  //         new TileLayer({
-  //           source: new OSM({
-  //             wrapX: false
-  //           })
-  //         })
-  //       ],
-  //       view: new View({
-  //         center: transform(this.state.center, 'EPSG:4326', 'EPSG:3857'),
-  //         zoom: this.state.zoom
-  //       })
-  //     })
-  //   };
-
-
+  buttonClickEvent() {
+    drawPoint.close()
+  }
   componentDidMount() {
     var gotomap = new classGotoMap();
+    showPopu.showPopu();
   }
   render() {
-    let drawPoint = new ManualDraw({
-      strokeColor: '#ff0088',
-      imageColor: '#ff0088',
-      drawtype: 'Point',
-    });
-    var showPopuEvent = new classSetPop();
+    let drawPointClass = drawPoint;
+    let showPopuEvent = showPopu;
     return (
-      <Fragment>
-        <div style={{margin:10}}>
+      <div className={st.content}>
+        <div style={{ margin: 20 }}>
           <Button style={{ marginRight: 10 }} onClick={() => {
-            drawPoint.draw();
+            drawPointClass.draw();
+            // showPopuEvent.addEvtClick();
           }}>选点</Button>
           <Button style={{ marginRight: 10 }} onClick={() => {
-            drawPoint.close();
+            drawPointClass.close();
           }}>取消选点</Button>
-          {/* <Button type='primary' onClick={() => {
-            showPopuEvent.showPopu();
-          }}>showpop</Button> */}
-          <Input style={{marginLeft:15, marginRight:5 ,width:250}} placeholder='请输入路线名称'></Input>
-          <Button onClick={() => {
-            showPopuEvent.showPopu();
-          }}>保存并创建</Button>
+          <Input style={{ marginRight: 5, width: 250 }} placeholder='请输入路线名称'></Input>
+          <Button className='btn1' onClick={() => {
+            drawPoint.check()
+          }}>check</Button>
         </div>
-        <div id='map' style={{ width: 1333 }}></div>
-        <div id="popup" className={st.olPopup} style={{ display: 'none' }}>
-          <a href="#" id="popup-closer" className={st.olPopupCloser}></a>
-          <div id="popup-content">
-          </div>
-          <Button>delete</Button>
-        </div>
-      </Fragment>
+        <Row>
+          <Col span={16}>
+            <div id='map-containet' style={{ width: 1048, margin: '0 20px' }}>
+              <div id='map' style={{ width: '100%', height: 800 }}></div>
+              <div id="popup" className={st.olPopup} style={{ display: 'none' }}>
+                <a href="#" id="popup-closer" className={st.olPopupCloser}></a>
+                <div id="popup-content">
+                </div>
+                <Button id='popup-delete'>delete</Button>
+              </div>
+            </div>
+          </Col>
+          <Col span={8}>
+            {/* <Table columns={columns} style={{width:'100%'}}></Table> */}
+          </Col>
+        </Row>
+
+      </div>
     )
   }
 }
